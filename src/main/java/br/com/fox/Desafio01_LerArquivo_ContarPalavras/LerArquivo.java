@@ -1,25 +1,40 @@
 package br.com.fox.Desafio01_LerArquivo_ContarPalavras;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class LerArquivo {
 
-   //Primeiro crio o método e passo como argumento um String para ele ler o "caminho" em forma de String, também preciso
-    //lançar uma IOException, pois caso aconteça um erro ele precisa capturar.
     public static void leituraArquivo(String caminho) throws IOException {
         BufferedReader lendoBuffer = new BufferedReader(new FileReader(caminho));
 
+        Set<String> palavrasUnicas = new TreeSet<>();
+
         String linha = "";
-        while (true) {
-            if (linha != null) {
-                System.out.println(linha);
-            } else {
-                break;
+        while((linha = lendoBuffer.readLine()) != null) {
+
+            linha = linha.toLowerCase();
+            linha = linha.replaceAll("[^\\p{L}0-9 ]", "");
+            String[] palavraSeparada = linha.split(" ");
+
+            for (String palavra : palavraSeparada) {
+                palavrasUnicas.add(palavra);
             }
-            linha = lendoBuffer.readLine();
         }
         lendoBuffer.close();
+
+        System.out.println("Somente palavras não repetidas: ");
+        System.out.println("--------------------------------");
+        for (String palavra: palavrasUnicas){
+            System.out.println(palavra);
+        }
+        System.out.println("--------------------------------");
+        System.out.println("O número de palavras únicas é: " + palavrasUnicas.size());
+
+
     }
 }
